@@ -1,8 +1,7 @@
 [gene-expression]
 reference,/ref/refdata-gex-GRCh38-2024-A
 create-bam,true
-cell-annotation-model,auto
 
 [libraries]
-fastq_id,fastqs,feature_types
-gex1,/data/3p_Citrate_CPT_fastqs,Gene Expression
+fastq_id,fastqs,lanes,feature_types
+3p_Citrate_CPT,/data/3p_Citrate_CPT_fastqs,1|2,Gene Expression
