@@ -1,0 +1,7 @@
+[gene-expression]
+reference,/pbmc/ref/refdata-gex-GRCh38-2024-A
+create-bam,true
+
+[libraries]
+fastq_id,fastqs,feature_types
+gex1,/pbmc/data/3p_Citrate_CPT_fastqs,Gene Expression
