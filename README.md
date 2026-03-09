@@ -23,6 +23,7 @@ pbmc <- CreateSeuratObject(counts = pbcm.data, project = "pbmc",
 ```
 
 Format Data, visualize QC metrics
+```
 # The [[ operator can add columns to object metadata. This is a great place to stash QC stats
 pbmc[["percent.mt"]] <- PercentageFeatureSet(pbmc, pattern = "^MT-")
 
@@ -31,7 +32,12 @@ pdf(file = "figs/QC_Violin_Plot.pdf",
     width = 12, height = 8, paper = "letter")
 VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 dev.off()
+```
+![pdf](figs/QC_Violin_Plot_Fig_1.pdf)
 
+Scatter plots of feature X feature relationships, this includes percent MT dDNA, Feature RNA and counts
+
+```
 # FeatureScatter is typically used to visualize feature-feature relationships, but can be used
 # for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
 
@@ -44,6 +50,9 @@ plot
 dev.off()
 
 rm(plot, plot1, plot2)
+```
+![pdf](figs/feat_feat_correlation_fig_2.pdf)
+
 
 # I had to increase the number of cells from the original nFeature_RNA < 2500
 # I increased the nFeature_RNA to < 4000
