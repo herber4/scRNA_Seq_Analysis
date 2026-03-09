@@ -51,10 +51,10 @@ dev.off()
 rm(plot, plot1, plot2)
 ```
 ![png](figs/feat_feat_correlation_fig_2.png)
-Normalization
+Normalization, plot highly variable features
 ```
 # I had to increase the number of cells from the original nFeature_RNA < 2500
-# I increased the nFeature_RNA to < 4000
+# I increased the nFeature_RNA to < 3500
 
 pbmc <- subset(pbmc, subset = nFeature_RNA > 200 & nFeature_RNA < 3500 & percent.mt < 5)
 
@@ -78,8 +78,10 @@ dev.off()
 rm(plot1, plot2, plot)
 ```
 ![png](figs/plot_variable_features_fig_3.png)
-# scale data
 
+# Scale data, dimensionality reduction w PCA
+```
+# scale data
 all.genes <- rownames(pbmc)
 pbmc <- ScaleData(pbmc, features = all.genes)
 
@@ -113,9 +115,21 @@ pdf(file = "figs/elbow_plot_fig_8.pdf",
     width = 12, height = 10, paper = "letter")
 ElbowPlot(pbmc)
 dev.off()
+```
+Visualize the dim loadings
+![png](figs/visualize_dim_loadings_fig_4.png)
+Visualize the PCA
+![png](figs/PCA_Fig_5.png)
+Visualize PC_1 gene expression
+![png](figs/PC_1_Heatmap_fig_6.png)
+Visualize the top 15 PCs
+![png](figs/all_PC_Heatmaps_fig_7.png)
+Visualize elbow plot to select PCs to include in downstream analysis
+![png](figs/elbow_plot_fig_8.png)
 
+# Now we move on to cell clustering
+```
 # Cell clustering
-
 pbmc <- FindNeighbors(pbmc, dims = 1:10)
 pbmc <- FindClusters(pbmc, resolution = 0.5)
 
@@ -130,11 +144,12 @@ pdf(file = "figs/UMAP_Fig_9.pdf",
     width = 10, height = 10, paper = "letter")
 DimPlot(pbmc, reduction = "umap")
 dev.off()
-
+```
+![png](figs/UMAP_Fig_9.png)
 
 # Now we can investigate DEG for biomarker discovery
-
-# find all markers of cluster 2
+find all markers of cluster 2
+```
 cluster2.markers <- FindMarkers(pbmc, ident.1 = 2)
 head(cluster2.markers, n = 5)
 
@@ -156,7 +171,6 @@ pdf(file = "figs/LEF1_PRKCA_Cluster_Expression_Violin_Plot_Fig_10.pdf",
 VlnPlot(pbmc, features = c("LEF1", "PRKCA"))
 dev.off()
 
-
 pdf(file = "figs/gene_by_UMAP_Fig_11.pdf",
     width = 12, height = 10, paper = "letter")
 FeaturePlot(pbmc, features = c("LEF1", "TGFBR2", "NDFIP1", "PRKCA", "TCF7", "RAPGEF6", "TXK", "GAS5",
@@ -172,10 +186,17 @@ pdf(file = "figs/top_pbmc_markers_fig_12.pdf",
     width = 12, height = 10, paper = "letter")
 DoHeatmap(pbmc, features = top10$gene)
 dev.off()
+```
+We can visualize the marker genes across cell clusters
+![png](figs/LEF1_PRKCA_Cluster_Expression_Violin_Plot_Fig_10.png)
+and then we can see the expression of each marker gene over the UMAP, these are some of the top 20 markers
+![png](figs/gene_by_UMAP_Fig_11.png)
+Finally we can plot the expression heatmap for the top X genes 
+![png](figs/top_pbmc_markers_fig_12.png)
 
-
-### perform cell and cluster type annotation using cellDex + SingleR
-
+# perform cell and cluster type annotation using cellDex + SingleR
+So i didnt have axis to auto cell annotation via 10X cloud service, but there seems to be a highly cited method using celldex and SingleR to 'de novo' annotate cell types. This pipeline uses cell type expression matrices from the Human Cell Type Data Atlas to infer cell type based on trends in expressionof marker genes.
+```
 norm_exp_mat <- Seurat::GetAssayData(
   object = pbmc,
   assay = "RNA",
@@ -183,10 +204,7 @@ norm_exp_mat <- Seurat::GetAssayData(
 )
 
 dim(norm_exp_mat)
-
 hpca <- HumanPrimaryCellAtlasData(ensembl=FALSE)
-
-
 
 ann_norm_exp_mat <- SingleR(norm_exp_mat, ref=hpca, labels=hpca$label.fine,
                             de.method = "classic",
@@ -195,8 +213,6 @@ ann_norm_exp_mat <- SingleR(norm_exp_mat, ref=hpca, labels=hpca$label.fine,
                             BPPARAM = BiocParallel::SerialParam())
 length(unique(ann_norm_exp_mat$labels))
 summary(is.na(ann_norm_exp_mat$pruned.labels))
-
-
 
 pdf(file = "figs/cell_anno_score_heatmap.pdf",
     width = 12, height = 10, paper = "letter")
@@ -223,9 +239,10 @@ pdf(file = "figs/Ann_Cell_Plot_Fig13.pdf",
     width = 12, height = 10, paper = "letter")
 ann_plot
 dev.off()
-# UMAP with the cluster numbers (before annotation)
-
-
+```
+![png](figs/Ann_Cell_Plot_Fig13.png)
+As we can see above, there is quite a bit of overlap in the cell types, thus instead of annotating by cell type we will annotate each cluster with cell type
+```
 # Run cell annotation at the cluster level
 
 pop_by_cluster = prop.table(table(pbmc$singler_cells_labels,
@@ -268,3 +285,5 @@ pdf(file = "figs/Ann_Cluster_plot_Fig13.pdf",
     width = 12, height = 10, paper = "letter")
 ann_cluster_plot
 dev.off()
+```
+![png](figs/Ann_Cluster_plot_Fig13.png)
