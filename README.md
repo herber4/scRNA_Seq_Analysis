@@ -116,7 +116,7 @@ pdf(file = "figs/elbow_plot_fig_8.pdf",
 ElbowPlot(pbmc)
 dev.off()
 ```
-Visualize the dim loadings
+### Visualize the dim loadings
 ![png](figs/visualize_dim_loadings_fig_4.png)
 Visualize the PCA
 ![png](figs/PCA_Fig_5.png)
