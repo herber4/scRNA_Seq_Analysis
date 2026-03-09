@@ -33,7 +33,7 @@ pdf(file = "figs/QC_Violin_Plot.pdf",
 VlnPlot(pbmc, features = c("nFeature_RNA", "nCount_RNA", "percent.mt"), ncol = 3)
 dev.off()
 ```
-[pdf](figs/QC_Violin_Plot_Fig_1.pdf)
+![png](figs/QC_Violin_Plot_Fig_1.png)
 
 Scatter plots of feature X feature relationships, this includes percent MT dDNA, Feature RNA and counts
 
