@@ -118,13 +118,13 @@ dev.off()
 ```
 ### Visualize the dim loadings
 ![png](figs/visualize_dim_loadings_fig_4.png)
-Visualize the PCA
+### Visualize the PCA
 ![png](figs/PCA_Fig_5.png)
-Visualize PC_1 gene expression
+### Visualize PC_1 gene expression
 ![png](figs/PC_1_Heatmap_fig_6.png)
-Visualize the top 15 PCs
+### Visualize the top 15 PCs
 ![png](figs/all_PC_Heatmaps_fig_7.png)
-Visualize elbow plot to select PCs to include in downstream analysis
+### Visualize elbow plot to select PCs to include in downstream analysis
 ![png](figs/elbow_plot_fig_8.png)
 
 # Now we move on to cell clustering
@@ -187,11 +187,11 @@ pdf(file = "figs/top_pbmc_markers_fig_12.pdf",
 DoHeatmap(pbmc, features = top10$gene)
 dev.off()
 ```
-We can visualize the marker genes across cell clusters
+### We can visualize the marker genes across cell clusters
 ![png](figs/LEF1_PRKCA_Cluster_Expression_Violin_Plot_Fig_10.png)
-and then we can see the expression of each marker gene over the UMAP, these are some of the top 20 markers
+### and then we can see the expression of each marker gene over the UMAP, these are some of the top 20 markers
 ![png](figs/gene_by_UMAP_Fig_11.png)
-Finally we can plot the expression heatmap for the top X genes 
+### Finally we can plot the expression heatmap for the top X genes 
 ![png](figs/top_pbmc_markers_fig_12.png)
 
 # perform cell and cluster type annotation using cellDex + SingleR
@@ -240,8 +240,11 @@ pdf(file = "figs/Ann_Cell_Plot_Fig13.pdf",
 ann_plot
 dev.off()
 ```
+### Annotation by cell types is heavily overlapped
+As we can see below, there is quite a bit of overlap in the cell types, thus instead of annotating by cell type we will annotate each cluster with cell type
 ![png](figs/Ann_Cell_Plot_Fig13.png)
-As we can see above, there is quite a bit of overlap in the cell types, thus instead of annotating by cell type we will annotate each cluster with cell type
+
+### Infer cell types of each cluster
 ```
 # Run cell annotation at the cluster level
 
