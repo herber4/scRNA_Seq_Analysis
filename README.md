@@ -35,8 +35,7 @@ dev.off()
 ```
 ![png](figs/QC_Violin_Plot_Fig_1.png)
 
-# Scatter plots of feature X feature relationships, this includes percent MT dDNA, Feature RNA and counts
-
+Scatter plots of feature X feature relationships, this includes percent MT dDNA, Feature RNA and counts
 ```
 # FeatureScatter is typically used to visualize feature-feature relationships, but can be used
 # for anything calculated by the object, i.e. columns in object metadata, PC scores etc.
@@ -52,8 +51,8 @@ dev.off()
 rm(plot, plot1, plot2)
 ```
 ![png](figs/feat_feat_correlation_fig_2.png)
-
-
+Normalization
+```
 # I had to increase the number of cells from the original nFeature_RNA < 2500
 # I increased the nFeature_RNA to < 4000
 
@@ -77,7 +76,8 @@ pdf(file = "figs/plot_variable_features.pdf",
 plot2
 dev.off()
 rm(plot1, plot2, plot)
-
+```
+![png](figs/plot_variable_features_fig_3.png)
 # scale data
 
 all.genes <- rownames(pbmc)
